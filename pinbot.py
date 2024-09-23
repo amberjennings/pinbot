@@ -3,6 +3,9 @@
 import discord
 import yaml
 
+# Adjust this value to adjust how many reactions are needed to pin
+THRESHHOLD = 2
+
 intents = discord.Intents.default()
 
 intents.messages = True
@@ -29,7 +32,7 @@ async def ping(ctx):
 
 @bot.event
 async def on_reaction_add(reaction, user):
-	if reaction.emoji == "📌":
+	if reaction.emoji == "📌" and reaction.count == THRESHHOLD:
 		message = reaction.message
 
 		print(f"---\nMessage ID: {message.id}")
