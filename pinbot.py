@@ -40,8 +40,12 @@ async def on_reaction_add(reaction, user):
 		embed = discord.Embed(
 			title = f"{message.author} - {message.jump_url}",
 			description = message.content,
-			color=discord.Color.green()
+			color=discord.Color.green(),
+			thumbnail=message.author.avatar.url
 		)
+
+		if message.attachments:
+			embed = embed.set_image(url=message.attachments[0].url)
 
 		await channel.send(embed=embed)
 
