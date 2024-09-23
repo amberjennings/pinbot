@@ -3,8 +3,11 @@
 import discord
 import yaml
 
-# Adjust this value to adjust how many reactions are needed to pin
+# Adjust this value to change how many reactions are needed to pin
 THRESHHOLD = 2
+
+# Change this emote to set what is used to pin messages
+EMOTE = "📌"
 
 intents = discord.Intents.default()
 
@@ -32,7 +35,10 @@ async def ping(ctx):
 
 @bot.event
 async def on_reaction_add(reaction, user):
-	if reaction.emoji == "📌" and reaction.count == THRESHHOLD:
+	if user.bot:
+		return
+
+	if reaction.emoji == EMOTE and reaction.count == THRESHHOLD:
 		message = reaction.message
 
 		print(f"---\nMessage ID: {message.id}")
@@ -41,11 +47,11 @@ async def on_reaction_add(reaction, user):
 		print(f"Message Attachments: {message.attachments}\n")
 
 		embed = discord.Embed(
-			title = f"{message.author} - {message.jump_url}",
+			title = f"Original Message: {message.jump_url}",
 			description = message.content,
 			color=discord.Color.green(),
-			thumbnail=message.author.avatar.url
-		)
+		).set_author(name=f"{str(message.author.nick)} ({message.author.name})", \
+			     icon_url=message.author.avatar.url)
 
 		if message.attachments:
 			embed = embed.set_image(url=message.attachments[0].url)
