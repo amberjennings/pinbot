@@ -42,15 +42,17 @@ async def on_reaction_add(reaction, user):
 		message = reaction.message
 
 		print(f"---\nMessage ID: {message.id}")
-		print(f"Message Author: {message.author}")
-		print(f"Message Content: {message.content}")
-		print(f"Message Attachments: {message.attachments}\n")
+		print(f"Author UID: {message.author.id}")
+		print(f"Author username: {message.author}")
+		print(f"Content: {message.content}")
+		print(f"Attachments: {message.attachments}\n")
 
 		embed = discord.Embed(
 			title = f"Original Message: {message.jump_url}",
 			description = message.content,
 			color=discord.Color.green(),
-		).set_author(name=f"{str(message.author.nick)} ({message.author.name})", \
+		).set_author(name=f"{message.author.nick if message.author.nick \
+			     is not None else message.author.display_name} - ({message.author.name})", \
 			     icon_url=message.author.avatar.url)
 
 		if message.attachments:
